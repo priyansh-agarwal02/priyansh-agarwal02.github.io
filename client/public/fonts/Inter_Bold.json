@@ -1,0 +1,28 @@
+{
+  "glyphs": {
+    "A": { "ha": 694, "x_min": 0, "x_max": 694, "o": "m 275 714 l 419 714 l 694 0 l 540 0 l 480 174 l 214 174 l 154 0 l 0 0 l 275 714 m 429 281 l 347 517 l 266 281 l 429 281 z " },
+    "I": { "ha": 279, "x_min": 90, "x_max": 189, "o": "m 90 0 l 90 714 l 189 714 l 189 0 l 90 0 z " },
+    "L": { "ha": 558, "x_min": 91, "x_max": 540, "o": "m 91 0 l 91 714 l 191 714 l 191 104 l 540 104 l 540 0 l 91 0 z " },
+    "M": { "ha": 863, "x_min": 85, "x_max": 779, "o": "m 85 0 l 85 714 l 235 714 l 432 290 l 632 714 l 779 714 l 779 0 l 678 0 l 678 551 l 492 155 l 372 155 l 186 553 l 186 0 l 85 0 z " },
+    "/": { "ha": 434, "x_min": 32, "x_max": 402, "o": "m 32 -12 l 298 730 l 402 730 l 136 -12 l 32 -12 z " }
+  },
+  "familyName": "Inter",
+  "ascender": 969,
+  "descender": -241,
+  "underlinePosition": -100,
+  "underlineThickness": 50,
+  "boundingBox": { "yMin": -555, "xMin": -2728, "yMax": 2163, "xMax": 2516 },
+  "resolution": 1000,
+  "original_font_information": {
+    "format": 0,
+    "copyright": "Copyright 2020 The Inter Project Authors (https://github.com/rsms/inter)",
+    "fontFamily": "Inter",
+    "fontSubfamily": "Bold",
+    "uniqueID": "3.15;RSMS;Inter-Bold",
+    "fullName": "Inter Bold",
+    "version": "3.15",
+    "postScriptName": "Inter-Bold"
+  },
+  "cssFontWeight": "bold",
+  "cssFontStyle": "normal"
+}

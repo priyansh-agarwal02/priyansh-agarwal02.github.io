@@ -1,6 +1,7 @@
 import { useEffect, useState, Suspense } from "react";
 import { BrowserRouter } from "react-router-dom";
 import { motion } from "framer-motion";
+import { Canvas } from "@react-three/fiber";
 
 import Navbar from "./components/Navbar";
 import About from "./components/About";
@@ -8,6 +9,8 @@ import Experience from "./components/Experience";
 import Projects from "./components/Projects";
 import Contact from "./components/Contact";
 import Skills from "./components/Skills";
+import HologramComputer from "./components/canvas/HologramComputer";
+import StarsBackground from "./components/canvas/StarsBackground";
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -42,24 +45,58 @@ const App = () => {
         <div className="bg-hero-pattern bg-cover bg-no-repeat bg-center">
           <Navbar />
           <section className="relative w-full h-screen mx-auto">
+            {/* 3D background stars */}
+            <div className="absolute inset-0 z-[-1]">
+              <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
+                <Suspense fallback={null}>
+                  <StarsBackground count={1500} speed={0.3} />
+                  <ambientLight intensity={0.2} />
+                </Suspense>
+              </Canvas>
+            </div>
+
             <div className={`absolute inset-0 top-[120px] max-w-7xl mx-auto flex flex-row items-start gap-5 px-6 sm:px-16`}>
               <div className="flex flex-col justify-center items-center mt-5">
                 <div className="w-5 h-5 rounded-full bg-[#915eff]" />
                 <div className="w-1 sm:h-80 h-40 violet-gradient" />
               </div>
 
-              <div>
-                <h1 className="text-white text-4xl sm:text-6xl lg:text-8xl font-black">
+              <div className="z-10 w-full">
+                <h1 className="text-white text-4xl font-black sm:text-6xl lg:text-8xl leading-tight">
                   Hi, I'm <span className="text-[#915eff]">Priyansh</span>
                 </h1>
-                <p className="mt-2 text-white-100 text-lg sm:text-xl md:text-2xl">
+                <p className="mt-4 text-[#dfd9ff] text-lg sm:text-xl md:text-2xl max-w-3xl font-medium">
                   AI/ML Engineer specializing in LLMs, <br className="sm:block hidden" />
                   Agentic AI, and AI-powered automation
                 </p>
+                <div className="mt-8">
+                  <a 
+                    href="#contact" 
+                    className="bg-[#915eff] hover:bg-[#7d4ee0] text-white px-6 py-3 rounded-lg font-medium transition-colors inline-flex items-center gap-2"
+                  >
+                    Get in touch
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M5 12h14"></path>
+                      <path d="m12 5 7 7-7 7"></path>
+                    </svg>
+                  </a>
+                </div>
               </div>
             </div>
 
-            <div className="absolute xs:bottom-10 bottom-32 w-full flex justify-center items-center">
+            {/* 3D Computer */}
+            <div className="absolute right-0 bottom-0 h-screen w-full md:w-1/2 lg:w-1/3 z-[5]">
+              <Canvas camera={{ position: [0, 0, 10], fov: 25 }}>
+                <Suspense fallback={null}>
+                  <HologramComputer />
+                  <ambientLight intensity={0.3} />
+                  <directionalLight position={[5, 5, 5]} intensity={0.5} />
+                  <pointLight position={[0, 0, 3]} intensity={0.5} color="#915eff" />
+                </Suspense>
+              </Canvas>
+            </div>
+
+            <div className="absolute xs:bottom-10 bottom-32 w-full flex justify-center items-center z-10">
               <a href="#about">
                 <div className="w-[35px] h-[64px] rounded-3xl border-4 border-secondary flex justify-center items-start p-2">
                   <motion.div
