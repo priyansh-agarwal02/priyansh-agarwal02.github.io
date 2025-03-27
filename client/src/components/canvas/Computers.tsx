@@ -1,6 +1,6 @@
 import { Suspense, useEffect, useState, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, Preload, useGLTF } from "@react-three/drei";
+import { OrbitControls, Preload } from "@react-three/drei";
 import * as THREE from "three";
 import { gsap } from "gsap";
 
@@ -12,9 +12,9 @@ interface ComputerModelProps {
 // Basic geometric shapes to represent a stylized workstation
 const ComputerModel = ({ isMobile, scrollY }: ComputerModelProps) => {
   const groupRef = useRef<THREE.Group>(null);
-  const monitorRef = useRef<THREE.Mesh>(null);
+  const monitorGroupRef = useRef<THREE.Group>(null);
   const keyboardRef = useRef<THREE.Mesh>(null);
-  const cpuRef = useRef<THREE.Group>(null);
+  const cpuGroupRef = useRef<THREE.Group>(null);
   
   // Setup initial animation
   useEffect(() => {
@@ -46,8 +46,8 @@ const ComputerModel = ({ isMobile, scrollY }: ComputerModelProps) => {
   
   // Continuous subtle animation
   useFrame((state, delta) => {
-    if (monitorRef.current) {
-      monitorRef.current.rotation.y = Math.sin(state.clock.getElapsedTime() * 0.3) * 0.05;
+    if (monitorGroupRef.current) {
+      monitorGroupRef.current.rotation.y = Math.sin(state.clock.getElapsedTime() * 0.3) * 0.05;
     }
     if (keyboardRef.current) {
       keyboardRef.current.position.y = Math.sin(state.clock.getElapsedTime() * 2) * 0.02 - 0.2;
@@ -63,7 +63,7 @@ const ComputerModel = ({ isMobile, scrollY }: ComputerModelProps) => {
       </mesh>
       
       {/* Monitor */}
-      <group ref={monitorRef}>
+      <group ref={monitorGroupRef}>
         <mesh position={[0, 0.5, 0]} castShadow>
           <boxGeometry args={[3, 1.8, 0.1]} />
           <meshStandardMaterial color="#111111" />
@@ -93,7 +93,7 @@ const ComputerModel = ({ isMobile, scrollY }: ComputerModelProps) => {
       </mesh>
       
       {/* CPU Tower */}
-      <group ref={cpuRef} position={[-1.8, 0, 0]}>
+      <group ref={cpuGroupRef} position={[-1.8, 0, 0]}>
         <mesh castShadow>
           <boxGeometry args={[0.8, 1.5, 1.6]} />
           <meshStandardMaterial color="#222222" />
