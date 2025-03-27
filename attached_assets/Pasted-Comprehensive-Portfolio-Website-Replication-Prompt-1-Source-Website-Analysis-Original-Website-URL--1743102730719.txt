@@ -1,0 +1,103 @@
+Comprehensive Portfolio Website Replication Prompt
+1. Source Website Analysis
+
+Original Website URL: https://avinash-3d.web.app/#work
+Key Objective: Create an exact replica with personalized content for Priyansh Agarwal
+
+2. Technical Specifications
+2.1 Development Requirements
+
+ Maintain identical 3D design elements and layout
+ Ensure full responsiveness and cross-browser compatibility
+ Deploy through GitHub Pages
+ Implement error handling and optimization
+ Preserve original website's animation techniques
+
+2.2 Deployment Considerations
+
+ Version control using Git
+ Comprehensive README documentation
+ Modular and clean code structure
+ Performance optimization
+
+3. Content Personalization
+3.1 Personal Information
+
+Name: Priyansh Agarwal
+Professional Title: AI/ML Engineer
+
+3.2 Contact Details
+
+Phone: +91-7619826222
+Email: priyansh.official4@gmail.com
+LinkedIn: linkedin.com/in/priyansh-agarwal02
+GitHub: github.com/priyansh-agarwal02
+
+3.3 Professional Overview
+CopyI'm an AI/ML Engineer specializing in LLMs, Agentic AI, and AI-powered automation to build scalable, deployable solutions that enhance efficiency and performance. With expertise in CrewAI, LangChain, RAG, and fine-tuning LLMs (LoRA, PEFT, QLoRA), I develop intelligent chatbots, optimize AI workflows, and streamline decision-making. My focus is on automating complex tasks, building AI pipelines, and leveraging Explainable AI (Grad-CAM, SHAP, LIME) to create impactful, data-driven solutions. 🚀
+4. Design and UI/UX Replication
+4.1 Design Elements
+
+ Exact 3D layout recreation
+ Identical color scheme
+ Preserve interactive elements
+ Replicate scroll and hover animations
+
+4.2 Section Requirements
+
+ Home/Landing Section
+ About/Overview Section
+ Experience Section (to be added)
+ Projects Section (exact replica)
+ Contact Section
+ Tech Skills/Icons Section (simplified objects)
+
+5. Technology Stack Considerations
+
+Recommend using modern web technologies:
+
+React or Next.js for frontend
+Three.js for 3D elements
+Tailwind CSS for styling
+Framer Motion for animations
+
+
+
+6. Development Workflow
+6.1 Initial Setup
+
+Clone original repository
+Remove personal identifiers
+Replace with Priyansh's information
+Test and validate each component
+
+6.2 Customization Phase
+
+Verify 100% design fidelity
+Ensure smooth transitions
+Optimize performance
+Cross-device testing
+
+7. Post-Development Checklist
+
+ Validate responsive design
+ Test all interactive elements
+ Optimize loading performance
+ Ensure accessibility standards
+ Implement SEO best practices
+
+8. Potential Enhancements
+
+Consider adding:
+
+Dark/light mode toggle
+Performance metrics
+Internationalization support
+
+
+
+9. Final Validation
+
+Comprehensive comparison with original site
+Functional and visual parity
+Unique personal branding maintained
