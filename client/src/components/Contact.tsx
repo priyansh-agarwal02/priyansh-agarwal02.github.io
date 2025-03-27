@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { motion } from "framer-motion";
+import { Canvas } from "@react-three/fiber";
 
 import { styles } from "../styles";
 import StarsBackground from "./canvas/StarsBackground";
@@ -199,7 +200,10 @@ const Contact = () => {
           variants={slideIn("right", "tween", 0.2, 1)}
           className="xl:flex-1 xl:h-auto md:h-[550px] h-[300px]"
         >
-          <StarsBackground count={500} speed={0.3} />
+          <Canvas camera={{ position: [0, 0, 5], fov: 60 }}>
+            <ambientLight intensity={0.2} />
+            <StarsBackground count={500} speed={0.3} />
+          </Canvas>
         </motion.div>
       </div>
     </section>
