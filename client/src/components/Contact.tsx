@@ -1,9 +1,11 @@
 import { useRef } from "react";
 import { motion } from "framer-motion";
 import { Canvas } from "@react-three/fiber";
+import { OrbitControls, Preload } from "@react-three/drei";
 
 import { styles } from "../styles";
 import StarsBackground from "./canvas/StarsBackground";
+import AIRobot from "./canvas/AIRobot";
 import { slideIn } from "../utils/motion";
 
 const Contact = () => {
@@ -195,14 +197,37 @@ const Contact = () => {
           </div>
         </motion.div>
 
-        {/* Stars background */}
+        {/* AI Robot with Stars background */}
         <motion.div
           variants={slideIn("right", "tween", 0.2, 1)}
           className="xl:flex-1 xl:h-auto md:h-[550px] h-[300px]"
         >
-          <Canvas camera={{ position: [0, 0, 5], fov: 60 }}>
-            <ambientLight intensity={0.2} />
-            <StarsBackground count={500} speed={0.3} />
+          <Canvas 
+            camera={{ position: [0, 0, 5], fov: 60 }}
+            shadows
+          >
+            <ambientLight intensity={0.3} />
+            <directionalLight 
+              position={[5, 5, 5]} 
+              intensity={1} 
+              castShadow 
+              shadow-mapSize={1024} 
+            />
+            <pointLight position={[0, 0, 3]} intensity={1} color="#0077ff" />
+            
+            {/* Stars background */}
+            <StarsBackground count={1000} speed={0.4} />
+            
+            {/* AI Robot */}
+            <AIRobot />
+            
+            {/* Controls */}
+            <OrbitControls 
+              enableZoom={false}
+              maxPolarAngle={Math.PI / 2}
+              minPolarAngle={Math.PI / 2}
+            />
+            <Preload all />
           </Canvas>
         </motion.div>
       </div>
