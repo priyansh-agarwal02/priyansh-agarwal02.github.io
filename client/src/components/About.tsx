@@ -40,16 +40,21 @@ const About = () => {
           <h2 className={`${styles.sectionHeadText} mt-6`}>Overview.</h2>
         </motion.div>
 
-        <motion.p
+        <motion.div
           ref={textRef}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, amount: 0.25 }}
           variants={fadeIn("", "", 0.1, 1)}
-          className="mt-4 text-secondary text-[17px] max-w-3xl leading-[30px]"
+          className="mt-6 bg-tertiary p-6 rounded-lg shadow-xl"
         >
-          I'm an AI/ML Engineer specializing in LLMs, Agentic AI, and AI-powered automation to build scalable, deployable solutions that enhance efficiency and performance. With expertise in CrewAI, LangChain, RAG, and fine-tuning LLMs (LoRA, PEFT, QLoRA), I develop intelligent chatbots, optimize AI workflows, and streamline decision-making. My focus is on automating complex tasks, building AI pipelines, and leveraging Explainable AI (Grad-CAM, SHAP, LIME) to create impactful, data-driven solutions.
-        </motion.p>
+          <p className="text-white text-[17px] max-w-3xl leading-[30px]">
+            I'm an AI/ML Engineer specializing in LLMs, Agentic AI, and AI-powered automation to build scalable, deployable solutions that enhance efficiency and performance. With expertise in CrewAI, LangChain, RAG, and fine-tuning LLMs (LoRA, PEFT, QLoRA), I develop intelligent chatbots, optimize AI workflows, and streamline decision-making. 
+          </p>
+          <p className="text-white text-[17px] max-w-3xl leading-[30px] mt-4">
+            My focus is on automating complex tasks, building AI pipelines, and leveraging Explainable AI (Grad-CAM, SHAP, LIME) to create impactful, data-driven solutions.
+          </p>
+        </motion.div>
 
         <div className="mt-20 flex flex-wrap gap-10">
           {[
