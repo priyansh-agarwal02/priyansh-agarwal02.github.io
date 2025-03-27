@@ -4,12 +4,17 @@ import { OrbitControls, Preload, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import { gsap } from "gsap";
 
+interface ComputerModelProps {
+  isMobile: boolean;
+  scrollY: number;
+}
+
 // Basic geometric shapes to represent a stylized workstation
-const ComputerModel = ({ isMobile, scrollY }) => {
-  const groupRef = useRef();
-  const monitorRef = useRef();
-  const keyboardRef = useRef();
-  const cpuRef = useRef();
+const ComputerModel = ({ isMobile, scrollY }: ComputerModelProps) => {
+  const groupRef = useRef<THREE.Group>(null);
+  const monitorRef = useRef<THREE.Mesh>(null);
+  const keyboardRef = useRef<THREE.Mesh>(null);
+  const cpuRef = useRef<THREE.Group>(null);
   
   // Setup initial animation
   useEffect(() => {
@@ -105,7 +110,7 @@ const ComputerModel = ({ isMobile, scrollY }) => {
         </mesh>
       </group>
       
-      // AI chip representation
+      {/* AI chip representation */}
       <mesh position={[1.5, 0.1, 0.8]} rotation={[0, Math.PI / 4, 0]} castShadow>
         <boxGeometry args={[0.5, 0.05, 0.5]} />
         <meshStandardMaterial 
@@ -117,7 +122,7 @@ const ComputerModel = ({ isMobile, scrollY }) => {
         />
       </mesh>
       
-      // Code hologram effect
+      {/* Code hologram effect */}
       <points position={[0, 0.8, 0.5]}>
         <bufferGeometry>
           <bufferAttribute
@@ -148,7 +153,7 @@ const Computers = () => {
     const mediaQuery = window.matchMedia("(max-width: 500px)");
     setIsMobile(mediaQuery.matches);
 
-    const handleMediaQueryChange = (event) => {
+    const handleMediaQueryChange = (event: MediaQueryListEvent) => {
       setIsMobile(event.matches);
     };
 

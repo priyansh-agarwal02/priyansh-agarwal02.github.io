@@ -2,10 +2,6 @@ import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
 import { styles } from "../styles";
 import { gsap } from "gsap";
-import { Canvas } from "@react-three/fiber";
-import { Suspense } from "react";
-import { OrbitControls } from "@react-three/drei";
-import Computers from "./canvas/Computers";
 
 const Hero = () => {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -77,22 +73,9 @@ const Hero = () => {
         </a>
       </div>
 
-      <div className="absolute inset-0 w-full h-full z-[-1]">
-        <Canvas
-          frameloop="demand"
-          shadows
-          camera={{ position: [20, 3, 5], fov: 25 }}
-          gl={{ preserveDrawingBuffer: true }}
-        >
-          <Suspense fallback={null}>
-            <OrbitControls
-              enableZoom={false}
-              maxPolarAngle={Math.PI / 2}
-              minPolarAngle={Math.PI / 2}
-            />
-            <Computers />
-          </Suspense>
-        </Canvas>
+      {/* Temporarily removed 3D computer model due to issues */}
+      <div className="absolute inset-0 w-full h-full z-[-1] bg-hero-pattern bg-cover bg-no-repeat bg-center opacity-20">
+        {/* Background pattern */}
       </div>
     </section>
   );
