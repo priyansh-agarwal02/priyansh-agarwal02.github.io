@@ -9,8 +9,8 @@ import Experience from "./components/Experience";
 import Projects from "./components/Projects";
 import Contact from "./components/Contact";
 import Skills from "./components/Skills";
-import HologramComputer from "./components/canvas/HologramComputer";
 import StarsBackground from "./components/canvas/StarsBackground";
+import Computers from "./components/canvas/Computers";
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -86,14 +86,7 @@ const App = () => {
 
             {/* 3D Computer */}
             <div className="absolute right-0 bottom-0 h-screen w-full md:w-1/2 lg:w-1/3 z-[5]">
-              <Canvas camera={{ position: [0, 0, 10], fov: 25 }}>
-                <Suspense fallback={null}>
-                  <HologramComputer />
-                  <ambientLight intensity={0.3} />
-                  <directionalLight position={[5, 5, 5]} intensity={0.5} />
-                  <pointLight position={[0, 0, 3]} intensity={0.5} color="#915eff" />
-                </Suspense>
-              </Canvas>
+              <Computers />
             </div>
 
             <div className="absolute xs:bottom-10 bottom-32 w-full flex justify-center items-center z-10">

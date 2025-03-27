@@ -1,205 +1,156 @@
 import { Suspense, useEffect, useState, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, Preload } from "@react-three/drei";
+import { OrbitControls, Preload, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
-import { gsap } from "gsap";
 
 interface ComputerModelProps {
   isMobile: boolean;
   scrollY: number;
 }
 
-// Basic geometric shapes to represent a stylized workstation
 const ComputerModel = ({ isMobile, scrollY }: ComputerModelProps) => {
-  const groupRef = useRef<THREE.Group>(null);
-  const monitorGroupRef = useRef<THREE.Group>(null);
-  const keyboardRef = useRef<THREE.Mesh>(null);
-  const cpuGroupRef = useRef<THREE.Group>(null);
+  // Simple geometries for a stylized desktop computer
+  const computerRef = useRef<THREE.Group>(null);
+  const screenRef = useRef<THREE.Mesh>(null);
   
-  // Setup initial animation
-  useEffect(() => {
-    if (groupRef.current) {
-      gsap.from(groupRef.current.position, {
-        y: -5,
-        duration: 2,
-        ease: "elastic.out(1, 0.3)"
-      });
-      
-      gsap.from(groupRef.current.rotation, {
-        y: Math.PI * 2,
-        duration: 2,
-        ease: "power3.out"
-      });
+  // Animation effect
+  useFrame(({ clock }) => {
+    const time = clock.getElapsedTime();
+    
+    if (computerRef.current) {
+      // Make the computer slightly hover and rotate
+      computerRef.current.position.y = Math.sin(time * 0.5) * 0.05;
+      computerRef.current.rotation.y = -0.2 - scrollY * 0.005 + Math.sin(time * 0.3) * 0.05;
     }
-  }, []);
-  
-  // Animate based on scroll
-  useEffect(() => {
-    if (groupRef.current) {
-      gsap.to(groupRef.current.rotation, {
-        y: scrollY * 0.01,
-        duration: 0.8,
-        ease: "power1.out"
-      });
-    }
-  }, [scrollY]);
-  
-  // Continuous subtle animation
-  useFrame((state, delta) => {
-    if (monitorGroupRef.current) {
-      monitorGroupRef.current.rotation.y = Math.sin(state.clock.getElapsedTime() * 0.3) * 0.05;
-    }
-    if (keyboardRef.current) {
-      keyboardRef.current.position.y = Math.sin(state.clock.getElapsedTime() * 2) * 0.02 - 0.2;
+    
+    if (screenRef.current && screenRef.current.material instanceof THREE.MeshStandardMaterial) {
+      // Make the screen "pulse" with light
+      screenRef.current.material.emissiveIntensity = 0.5 + Math.sin(time * 2) * 0.2;
     }
   });
 
   return (
-    <group ref={groupRef} position={[0, isMobile ? -3 : -2.5, 0]} scale={isMobile ? 0.5 : 0.6}>
-      {/* Base/Desk */}
-      <mesh position={[0, -0.5, 0]} receiveShadow>
-        <boxGeometry args={[5, 0.1, 2.5]} />
-        <meshStandardMaterial color="#222222" />
+    <group ref={computerRef} position={[0, isMobile ? -1.5 : -1.4, 0]} scale={isMobile ? 0.5 : 0.7}>
+      {/* Base/Stand */}
+      <mesh receiveShadow castShadow position={[0, -0.95, 0]}>
+        <boxGeometry args={[1.5, 0.1, 1]} />
+        <meshStandardMaterial color="#111111" metalness={0.8} roughness={0.2} />
+      </mesh>
+      
+      {/* Stand neck */}
+      <mesh receiveShadow castShadow position={[0, -0.4, 0]}>
+        <cylinderGeometry args={[0.1, 0.1, 1, 16]} />
+        <meshStandardMaterial color="#222222" metalness={0.7} roughness={0.3} />
       </mesh>
       
       {/* Monitor */}
-      <group ref={monitorGroupRef}>
-        <mesh position={[0, 0.5, 0]} castShadow>
-          <boxGeometry args={[3, 1.8, 0.1]} />
-          <meshStandardMaterial color="#111111" />
+      <group position={[0, 0.3, 0]}>
+        {/* Monitor frame */}
+        <mesh receiveShadow castShadow>
+          <boxGeometry args={[3, 1.7, 0.1]} />
+          <meshStandardMaterial color="#111111" metalness={0.8} roughness={0.2} />
         </mesh>
         
         {/* Screen */}
-        <mesh position={[0, 0.5, 0.06]} castShadow>
-          <boxGeometry args={[2.8, 1.6, 0.01]} />
+        <mesh receiveShadow castShadow position={[0, 0, 0.06]} ref={screenRef}>
+          <planeGeometry args={[2.8, 1.5]} />
           <meshStandardMaterial 
-            color="#0e1538" 
-            emissive="#304675"
+            color="#050a24"
+            emissive="#4a5af5"
             emissiveIntensity={0.5}
           />
-        </mesh>
-        
-        {/* Monitor Stand */}
-        <mesh position={[0, -0.2, 0]} castShadow>
-          <boxGeometry args={[0.2, 0.5, 0.2]} />
-          <meshStandardMaterial color="#222222" />
         </mesh>
       </group>
       
       {/* Keyboard */}
-      <mesh ref={keyboardRef} position={[0, -0.2, 0.8]} castShadow>
-        <boxGeometry args={[2, 0.1, 0.6]} />
-        <meshStandardMaterial color="#333333" />
-      </mesh>
-      
-      {/* CPU Tower */}
-      <group ref={cpuGroupRef} position={[-1.8, 0, 0]}>
-        <mesh castShadow>
-          <boxGeometry args={[0.8, 1.5, 1.6]} />
-          <meshStandardMaterial color="#222222" />
+      <group position={[0, -0.7, 0.8]}>
+        <mesh receiveShadow castShadow>
+          <boxGeometry args={[2, 0.1, 0.6]} />
+          <meshStandardMaterial color="#111111" metalness={0.5} roughness={0.4} />
         </mesh>
         
-        {/* Power button */}
-        <mesh position={[0.41, 0.5, 0]} castShadow>
-          <cylinderGeometry args={[0.05, 0.05, 0.1, 12]} />
-          <meshStandardMaterial 
-            color="#3f51b5"
-            emissive="#3f51b5"
-            emissiveIntensity={0.5}
-          />
-        </mesh>
+        {/* Keys (simplified) */}
+        <group position={[0, 0.07, 0]}>
+          {Array.from({ length: 12 * 5 }).map((_, i) => {
+            const row = Math.floor(i / 12);
+            const col = i % 12;
+            return (
+              <mesh 
+                key={i} 
+                position={[(col - 5) * 0.15, 0, (row - 2) * 0.1]}
+                castShadow
+              >
+                <boxGeometry args={[0.13, 0.03, 0.08]} />
+                <meshStandardMaterial color="#222222" />
+              </mesh>
+            );
+          })}
+        </group>
       </group>
-      
-      {/* AI chip representation */}
-      <mesh position={[1.5, 0.1, 0.8]} rotation={[0, Math.PI / 4, 0]} castShadow>
-        <boxGeometry args={[0.5, 0.05, 0.5]} />
-        <meshStandardMaterial 
-          color="#915eff"
-          metalness={0.8}
-          roughness={0.2}
-          emissive="#915eff"
-          emissiveIntensity={0.3}
-        />
-      </mesh>
-      
-      {/* Code hologram effect */}
-      <points position={[0, 0.8, 0.5]}>
-        <bufferGeometry>
-          <bufferAttribute
-            attach="attributes-position"
-            count={100}
-            array={new Float32Array(300).map(() => Math.random() * 2 - 1)}
-            itemSize={3}
-          />
-        </bufferGeometry>
-        <pointsMaterial
-          size={0.02}
-          color="#00ffff"
-          sizeAttenuation
-          transparent
-          opacity={0.5}
-        />
-      </points>
     </group>
   );
 };
 
-const Computers = () => {
+// Computer model wrapper
+const ComputersCanvas = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [scrollY, setScrollY] = useState(0);
-  
-  // Responsive behavior
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(max-width: 500px)");
-    setIsMobile(mediaQuery.matches);
 
+  useEffect(() => {
+    // Add a listener for changes to the screen size
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
+    // Set the initial value of the 'isMobile' state variable
+    setIsMobile(mediaQuery.matches);
+    
+    // Define a callback function to handle changes to the media query
     const handleMediaQueryChange = (event: MediaQueryListEvent) => {
       setIsMobile(event.matches);
     };
-
+    
+    // Add the callback function as a listener for changes to the media query
+    mediaQuery.addEventListener("change", handleMediaQueryChange);
+    
+    // Handle scroll for rotation
     const handleScroll = () => {
       setScrollY(window.scrollY);
     };
-
-    mediaQuery.addEventListener("change", handleMediaQueryChange);
     window.addEventListener("scroll", handleScroll);
-
+    
+    // Remove the listener when the component is unmounted
     return () => {
       mediaQuery.removeEventListener("change", handleMediaQueryChange);
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
+  
   return (
     <Canvas
       frameloop="demand"
       shadows
       dpr={[1, 2]}
-      camera={{ position: [20, 3, 5], fov: 25 }}
+      camera={{ position: [0, 0, 5], fov: 25 }}
       gl={{ preserveDrawingBuffer: true }}
+      style={{ position: "absolute", width: "100%", height: "100%" }}
     >
       <Suspense fallback={null}>
-        <OrbitControls
-          enableZoom={false}
+        <OrbitControls 
+          enableZoom={false} 
           maxPolarAngle={Math.PI / 2}
           minPolarAngle={Math.PI / 2}
         />
+        <ambientLight intensity={0.5} />
+        <directionalLight
+          position={[5, 5, 5]}
+          castShadow
+          shadow-mapSize={1024}
+          intensity={1}
+        />
+        <pointLight position={[0, 0, 3]} intensity={0.5} color="#915eff" />
         <ComputerModel isMobile={isMobile} scrollY={scrollY} />
       </Suspense>
-
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[5, 5, 5]} intensity={1} castShadow />
-      <spotLight
-        position={[-5, 5, -5]}
-        angle={0.3}
-        penumbra={1}
-        intensity={1}
-        castShadow
-      />
-
       <Preload all />
     </Canvas>
   );
 };
 
-export default Computers;
+export default ComputersCanvas;
