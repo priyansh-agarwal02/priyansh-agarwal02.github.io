@@ -38,7 +38,7 @@ const Skills = () => {
           variants={textVariant(0.1)}
         >
           <p className={styles.sectionSubText}>My technical expertise</p>
-          <h2 className={styles.sectionHeadText}>Skills & Technologies.</h2>
+          <h2 className={`${styles.sectionHeadText} mt-6`}>Skills & Technologies.</h2>
         </motion.div>
 
         <motion.p
