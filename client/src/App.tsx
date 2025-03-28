@@ -108,11 +108,25 @@ const App = () => {
             </div>
           </section>
         </div>
-        <About />
-        <Experience />
-        <Skills />
-        <Projects />
-        <div className="relative z-0">
+        
+        {/* Add negative margin to reduce space between sections */}
+        <div className="mt-[-20px]">
+          <About />
+        </div>
+        
+        <div className="mt-[-40px]">
+          <Experience />
+        </div>
+        
+        <div className="mt-[-40px]">
+          <Skills />
+        </div>
+        
+        <div className="mt-[-40px]">
+          <Projects />
+        </div>
+        
+        <div className="relative z-0 mt-[-20px]">
           <Contact />
         </div>
       </div>

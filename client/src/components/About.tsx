@@ -56,7 +56,7 @@ const About = () => {
           </p>
         </motion.div>
 
-        <div className="mt-20 flex flex-wrap gap-10">
+        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
             {
               title: "LLM Specialist",
@@ -73,13 +73,13 @@ const About = () => {
           ].map((service, index) => (
             <motion.div
               key={index}
-              variants={fadeIn("right", "spring", 0.1 * index, 0.75)}
+              variants={fadeIn("up", "spring", 0.1 * index, 0.75)}
               initial="hidden"
               whileInView="show"
               viewport={{ once: true, amount: 0.25 }}
-              className="w-full sm:w-[calc(50%-20px)] lg:w-[calc(33.33%-20px)] green-pink-gradient p-[1px] rounded-[20px] shadow-card"
+              className="green-pink-gradient p-[1px] rounded-[20px] shadow-card"
             >
-              <div className="bg-tertiary rounded-[20px] py-5 px-12 min-h-[280px] flex justify-evenly items-center flex-col">
+              <div className="bg-tertiary rounded-[20px] py-5 px-8 min-h-[220px] flex justify-evenly items-center flex-col h-full">
                 <h3 className="text-white text-[20px] font-bold text-center">
                   {service.title}
                 </h3>

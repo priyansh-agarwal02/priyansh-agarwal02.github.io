@@ -4,18 +4,17 @@ import { fadeIn, textVariant } from "../utils/motion";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import TechIcons from "./TechIcons";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Skills = () => {
   const skillsRef = useRef<HTMLDivElement>(null);
-  const iconsRef = useRef<HTMLDivElement>(null);
+  const skillCardsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (skillsRef.current && iconsRef.current) {
-      gsap.from(iconsRef.current, {
-        y: 100,
+    if (skillsRef.current && skillCardsRef.current) {
+      gsap.from(skillCardsRef.current, {
+        y: 50,
         opacity: 0,
         duration: 1,
         scrollTrigger: {
@@ -46,19 +45,15 @@ const Skills = () => {
           whileInView="show"
           viewport={{ once: true, amount: 0.25 }}
           variants={fadeIn("", "", 0.1, 1)}
-          className="mt-4 text-secondary text-[17px] max-w-3xl leading-[30px]"
+          className="mt-4 mb-10 text-secondary text-[17px] max-w-3xl leading-[30px]"
         >
           With expertise in a wide range of AI and machine learning technologies, I specialize in developing cutting-edge solutions that leverage the power of modern AI frameworks and tools. Below are some of the key technologies I work with.
         </motion.p>
 
         <div 
-          ref={iconsRef}
-          className="mt-20 flex flex-col items-center"
+          ref={skillCardsRef}
+          className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
         >
-          <TechIcons />
-        </div>
-
-        <div className="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {[
             {
               category: "Machine Learning",
@@ -91,7 +86,7 @@ const Skills = () => {
               initial="hidden"
               whileInView="show"
               viewport={{ once: true, amount: 0.25 }}
-              className="bg-tertiary rounded-2xl p-6"
+              className="bg-tertiary rounded-2xl p-6 shadow-xl"
             >
               <h3 className="text-white text-[20px] font-bold mb-4">{skillGroup.category}</h3>
               <div className="flex flex-wrap gap-2">

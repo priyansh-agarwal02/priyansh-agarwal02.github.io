@@ -124,7 +124,7 @@ const Projects = () => {
               whileInView="show"
               viewport={{ once: true, amount: 0.25 }}
               variants={fadeIn("", "", 0.1, 1)}
-              className="mt-3 text-secondary text-[17px] max-w-3xl leading-[30px]"
+              className="mt-6 mb-6 text-secondary text-[17px] max-w-3xl leading-[30px]"
             >
               Following projects showcase my skills and experience through real-world
               examples of my work. Each project is briefly described with links to
@@ -134,7 +134,7 @@ const Projects = () => {
           </div>
         </div>
 
-        <div className="mt-20 flex flex-wrap gap-7">
+        <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
           {projects.map((project, index) => (
             <ProjectCard key={`project-${index}`} index={index} {...project} />
           ))}

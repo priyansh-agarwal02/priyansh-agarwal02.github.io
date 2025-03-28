@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Preload } from "@react-three/drei";
@@ -10,10 +10,29 @@ import { slideIn } from "../utils/motion";
 
 const Contact = () => {
   const contactRef = useRef<HTMLDivElement>(null);
+  
+  // Log when Contact component mounts
+  useEffect(() => {
+    console.log("Contact section mounted");
+  }, []);
 
   return (
-    <section id="contact" className="relative w-full h-auto pb-8 items-center flex xl:flex-row flex-col overflow-hidden">
-      <div className={`${styles.paddingX} max-w-7xl mx-auto flex md:flex-row flex-col-reverse items-center gap-8 inset-0`}>
+    <section 
+      id="contact" 
+      className="relative w-full h-auto min-h-screen pb-8 items-center flex xl:flex-row flex-col overflow-hidden"
+      ref={contactRef}
+    >
+      {/* Full-screen stars background for the entire section */}
+      <div className="absolute inset-0 w-full h-full z-0">
+        <Canvas 
+          camera={{ position: [0, 0, 5], fov: 75 }}
+        >
+          <StarsBackground count={1000} speed={0.4} />
+          <ambientLight intensity={0.1} />
+        </Canvas>
+      </div>
+      
+      <div className={`${styles.paddingX} max-w-7xl mx-auto flex md:flex-row flex-col-reverse items-center gap-8 relative z-10`}>
         {/* Contact info section */}
         <motion.div
           variants={slideIn("left", "tween", 0.2, 1)}
@@ -197,26 +216,23 @@ const Contact = () => {
           </div>
         </motion.div>
 
-        {/* AI Robot with Stars background */}
+        {/* AI Robot - Separated from stars background */}
         <motion.div
           variants={slideIn("right", "tween", 0.2, 1)}
-          className="xl:flex-1 xl:h-auto md:h-[550px] h-[300px]"
+          className="xl:flex-1 xl:h-auto md:h-[550px] h-[300px] relative z-10"
         >
           <Canvas 
             camera={{ position: [0, 0, 5], fov: 60 }}
             shadows
           >
-            <ambientLight intensity={0.3} />
+            <ambientLight intensity={0.5} />
             <directionalLight 
               position={[5, 5, 5]} 
-              intensity={1} 
+              intensity={1.2} 
               castShadow 
               shadow-mapSize={1024} 
             />
-            <pointLight position={[0, 0, 3]} intensity={1} color="#0077ff" />
-            
-            {/* Stars background */}
-            <StarsBackground count={1000} speed={0.4} />
+            <pointLight position={[0, 0, 3]} intensity={1.5} color="#0077ff" />
             
             {/* AI Robot */}
             <AIRobot />

@@ -198,14 +198,24 @@ const ComputersCanvas = () => {
     };
   }, []);
   
+  // Log visibility of the component
+  useEffect(() => {
+    console.log("3D Laptop component rendered");
+  }, []);
+  
   return (
     <Canvas
-      frameloop="demand"
+      frameloop="always"
       shadows
       dpr={[1, 2]}
       camera={{ position: [0, 0, 5], fov: 25 }}
       gl={{ preserveDrawingBuffer: true }}
-      style={{ position: "absolute", width: "100%", height: "100%" }}
+      style={{ 
+        position: "absolute", 
+        width: "100%", 
+        height: "100%", 
+        zIndex: 1 
+      }}
     >
       <Suspense fallback={null}>
         <OrbitControls 
@@ -213,14 +223,14 @@ const ComputersCanvas = () => {
           maxPolarAngle={Math.PI / 2}
           minPolarAngle={Math.PI / 2}
         />
-        <ambientLight intensity={0.5} />
+        <ambientLight intensity={0.8} />
         <directionalLight
           position={[5, 5, 5]}
           castShadow
           shadow-mapSize={1024}
-          intensity={1}
+          intensity={1.5}
         />
-        <pointLight position={[0, 0, 3]} intensity={0.5} color="#915eff" />
+        <pointLight position={[0, 0, 3]} intensity={1} color="#915eff" />
         <GamingLaptop isMobile={isMobile} scrollY={scrollY} />
       </Suspense>
       <Preload all />
