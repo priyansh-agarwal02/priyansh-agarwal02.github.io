@@ -97,6 +97,7 @@ const Hero = () => {
       <div 
         ref={computerContainerRef}
         className="absolute right-0 bottom-0 w-full md:w-1/2 h-full z-[1]"
+        style={{ pointerEvents: "auto" }}
       >
         <Computers />
       </div>

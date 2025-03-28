@@ -62,11 +62,16 @@ const MacbookPro = ({ isMobile, scrollY }: ComputerModelProps) => {
     }
   });
 
+  // Log laptop visibility
+  useEffect(() => {
+    console.log("MacBook Pro model initialized");
+  }, []);
+
   return (
     <group 
       ref={laptopRef} 
-      position={[0, isMobile ? -1.2 : -1.0, 0]} 
-      scale={isMobile ? 0.4 : 0.55}
+      position={[0, isMobile ? -1.0 : -0.8, 0]} 
+      scale={isMobile ? 0.6 : 0.85}
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
     >
@@ -137,13 +142,13 @@ const MacbookPro = ({ isMobile, scrollY }: ComputerModelProps) => {
           <meshStandardMaterial color="#000000" metalness={0.1} roughness={0.5} />
         </mesh>
         
-        {/* Actual screen (bright white) */}
+        {/* Actual screen (bright white with purple gradient) */}
         <mesh receiveShadow castShadow position={[0, 0, 0.04]} ref={screenRef}>
           <planeGeometry args={[2.7, 1.7]} />
           <meshStandardMaterial 
             color="#ffffff"
-            emissive="#ffffff"
-            emissiveIntensity={0.9}
+            emissive="#915eff"
+            emissiveIntensity={0.2}
           />
         </mesh>
         
@@ -155,8 +160,8 @@ const MacbookPro = ({ isMobile, scrollY }: ComputerModelProps) => {
         
         {/* Text on screen - AI-themed */}
         <Text
-          position={[0, 0.2, 0.05]}
-          fontSize={0.15}
+          position={[0, 0.5, 0.05]}
+          fontSize={0.25}
           color="#000000"
           font="/fonts/Inter_Bold.json"
           anchorX="center"
@@ -167,15 +172,26 @@ const MacbookPro = ({ isMobile, scrollY }: ComputerModelProps) => {
         
         {/* Code snippet on screen */}
         <Text
-          position={[0, -0.2, 0.05]}
-          fontSize={0.08}
+          position={[0, 0, 0.05]}
+          fontSize={0.1}
           color="#000000"
           font="/fonts/Inter_Bold.json"
           anchorX="center"
           anchorY="middle"
         >
-          {`function trainAI() {\n  const model = new LLM();\n  model.optimize(); \n  return model;\n}`}
+          {`class LLM {\n  constructor() {\n    this.layers = [...]\n  }\n  optimize() { ... }\n  train(data) { ... }\n}`}
         </Text>
+        
+        {/* Decorative elements on screen */}
+        <mesh position={[-1.0, -0.6, 0.05]}>
+          <circleGeometry args={[0.2, 32]} />
+          <meshStandardMaterial color="#915eff" emissive="#915eff" emissiveIntensity={0.5} />
+        </mesh>
+        
+        <mesh position={[1.0, -0.6, 0.05]}>
+          <circleGeometry args={[0.2, 32]} />
+          <meshStandardMaterial color="#915eff" emissive="#915eff" emissiveIntensity={0.5} />
+        </mesh>
       </group>
       
       {/* Apple logo on lid back (glowing) */}
@@ -239,13 +255,14 @@ const ComputersCanvas = () => {
       frameloop="always"
       shadows
       dpr={[1, 2]}
-      camera={{ position: [0, 0, 5], fov: 25 }}
+      camera={{ position: [0, 0, 5], fov: 30 }}
       gl={{ preserveDrawingBuffer: true }}
       style={{ 
         position: "absolute", 
         width: "100%", 
         height: "100%", 
-        zIndex: 1 
+        zIndex: 10,
+        pointerEvents: "auto"
       }}
     >
       <Suspense fallback={null}>
