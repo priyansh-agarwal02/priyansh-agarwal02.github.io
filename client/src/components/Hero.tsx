@@ -4,7 +4,7 @@ import { styles } from "../styles";
 import { gsap } from "gsap";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import Computers from "./canvas/Computers";
+import SimpleLaptop from "./canvas/SimpleLaptop";
 
 const Hero = () => {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -93,13 +93,26 @@ const Hero = () => {
         </a>
       </div>
 
-      {/* Computer model container with explicit positioning */}
+      {/* Computer model container with direct Canvas implementation */}
       <div 
         ref={computerContainerRef}
-        className="absolute right-0 bottom-0 w-full md:w-1/2 h-full z-[1]"
-        style={{ pointerEvents: "auto" }}
+        className="absolute right-0 bottom-0 w-full md:w-1/2 h-full z-[15]"
       >
-        <Computers />
+        <Canvas
+          frameloop="always"
+          shadows
+          camera={{ position: [0, 0, 5], fov: 30 }}
+          gl={{ preserveDrawingBuffer: true }}
+          style={{ width: "100%", height: "100%" }}
+        >
+          <Suspense fallback={null}>
+            <ambientLight intensity={0.8} />
+            <directionalLight position={[5, 5, 5]} intensity={1} castShadow />
+            <pointLight position={[0, 0, 3]} intensity={1} color="#915eff" />
+            <SimpleLaptop />
+            <OrbitControls enableZoom={false} />
+          </Suspense>
+        </Canvas>
       </div>
     </section>
   );
