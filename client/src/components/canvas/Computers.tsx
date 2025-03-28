@@ -8,10 +8,11 @@ interface ComputerModelProps {
   scrollY: number;
 }
 
-const GamingLaptop = ({ isMobile, scrollY }: ComputerModelProps) => {
+const MacbookPro = ({ isMobile, scrollY }: ComputerModelProps) => {
   // References for animation
   const laptopRef = useRef<THREE.Group>(null);
   const screenRef = useRef<THREE.Mesh>(null);
+  const logoRef = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
   
   // Animation effect
@@ -52,7 +53,12 @@ const GamingLaptop = ({ isMobile, scrollY }: ComputerModelProps) => {
     
     if (screenRef.current && screenRef.current.material instanceof THREE.MeshStandardMaterial) {
       // Make the screen "pulse" with light
-      screenRef.current.material.emissiveIntensity = 0.7 + Math.sin(time * 1.5) * 0.3;
+      screenRef.current.material.emissiveIntensity = 0.9 + Math.sin(time * 1.5) * 0.1;
+    }
+    
+    if (logoRef.current && logoRef.current.material instanceof THREE.MeshStandardMaterial) {
+      // Animate logo glow
+      logoRef.current.material.emissiveIntensity = 0.7 + Math.sin(time * 0.8) * 0.3;
     }
   });
 
@@ -64,44 +70,53 @@ const GamingLaptop = ({ isMobile, scrollY }: ComputerModelProps) => {
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
     >
-      {/* Base - lower part of laptop */}
+      {/* Base - Aluminum unibody */}
       <mesh receiveShadow castShadow position={[0, 0, 0]}>
-        <boxGeometry args={[3, 0.2, 2]} />
-        <meshStandardMaterial color="#222222" metalness={0.8} roughness={0.2} />
+        <boxGeometry args={[3, 0.15, 2]} />
+        <meshStandardMaterial color="#c0c0c0" metalness={0.9} roughness={0.1} />
       </mesh>
       
-      {/* Keyboard area - indented */}
-      <mesh receiveShadow castShadow position={[0, 0.11, 0]}>
-        <boxGeometry args={[2.8, 0.02, 1.8]} />
-        <meshStandardMaterial color="#111111" metalness={0.7} roughness={0.2} />
+      {/* Rounded edges for base */}
+      {[
+        [1.5, 0, 1] as [number, number, number], 
+        [-1.5, 0, 1] as [number, number, number], 
+        [1.5, 0, -1] as [number, number, number], 
+        [-1.5, 0, -1] as [number, number, number]
+      ].map((pos, i) => (
+        <mesh key={i} position={pos} castShadow receiveShadow>
+          <sphereGeometry args={[0.05, 8, 8, 0, Math.PI * 2, 0, Math.PI / 2]} />
+          <meshStandardMaterial color="#c0c0c0" metalness={0.9} roughness={0.1} />
+        </mesh>
+      ))}
+      
+      {/* Keyboard area */}
+      <mesh receiveShadow castShadow position={[0, 0.08, 0]}>
+        <boxGeometry args={[2.8, 0.01, 1.8]} />
+        <meshStandardMaterial color="#1a1a1a" metalness={0.5} roughness={0.2} />
       </mesh>
       
       {/* Touchpad */}
-      <mesh receiveShadow castShadow position={[0, 0.12, 0.7]}>
-        <boxGeometry args={[1, 0.01, 0.6]} />
-        <meshStandardMaterial color="#1a1a1a" metalness={0.5} roughness={0.3} />
+      <mesh receiveShadow castShadow position={[0, 0.085, 0.6]}>
+        <boxGeometry args={[1.2, 0.01, 0.8]} />
+        <meshStandardMaterial color="#1a1a1a" metalness={0.6} roughness={0.2} />
       </mesh>
       
-      {/* Keys - colorful gaming keyboard */}
-      <group position={[0, 0.12, 0]}>
-        {Array.from({ length: 6 * 12 }).map((_, i) => {
-          const row = Math.floor(i / 12);
-          const col = i % 12;
-          // Rainbow color effect for gaming feel
-          const hue = (col / 12) * 360;
-          const color = new THREE.Color().setHSL(hue/360, 0.7, 0.5);
-          
+      {/* Keys - MacBook style keyboard */}
+      <group position={[0, 0.09, -0.2]}>
+        {Array.from({ length: 6 * 14 }).map((_, i) => {
+          const row = Math.floor(i / 14);
+          const col = i % 14;
           return (
             <mesh 
               key={i} 
-              position={[(col - 5.5) * 0.22, 0.01, (row - 3) * 0.15]}
+              position={[(col - 6.5) * 0.19, 0.01, (row - 2.5) * 0.19]}
               castShadow
             >
-              <boxGeometry args={[0.19, 0.02, 0.12]} />
+              <boxGeometry args={[0.17, 0.01, 0.17]} />
               <meshStandardMaterial 
-                color={hovered ? color : "#333333"} 
-                emissive={hovered ? color : "#000000"}
-                emissiveIntensity={hovered ? 0.5 : 0}
+                color="#1a1a1a" 
+                metalness={0.6}
+                roughness={0.3}
               />
             </mesh>
           );
@@ -109,33 +124,39 @@ const GamingLaptop = ({ isMobile, scrollY }: ComputerModelProps) => {
       </group>
       
       {/* Laptop lid/screen (slightly tilted back) */}
-      <group position={[0, 0.1, -1]} rotation={[Math.PI / 4, 0, 0]}>
-        {/* Screen outer frame */}
+      <group position={[0, 0.08, -1]} rotation={[Math.PI / 4, 0, 0]}>
+        {/* Screen outer frame (Aluminum) */}
         <mesh receiveShadow castShadow>
-          <boxGeometry args={[3, 2, 0.1]} />
-          <meshStandardMaterial color="#222222" metalness={0.8} roughness={0.2} />
+          <boxGeometry args={[3, 2, 0.05]} />
+          <meshStandardMaterial color="#c0c0c0" metalness={0.9} roughness={0.1} />
         </mesh>
         
-        {/* Screen inner frame */}
-        <mesh receiveShadow castShadow position={[0, 0, 0.06]}>
+        {/* Black screen bezel */}
+        <mesh receiveShadow castShadow position={[0, 0, 0.03]}>
           <boxGeometry args={[2.9, 1.9, 0.01]} />
-          <meshStandardMaterial color="#111111" metalness={0.5} roughness={0.2} />
+          <meshStandardMaterial color="#000000" metalness={0.1} roughness={0.5} />
         </mesh>
         
-        {/* Actual screen */}
-        <mesh receiveShadow castShadow position={[0, 0, 0.07]} ref={screenRef}>
+        {/* Actual screen (bright white) */}
+        <mesh receiveShadow castShadow position={[0, 0, 0.04]} ref={screenRef}>
           <planeGeometry args={[2.7, 1.7]} />
           <meshStandardMaterial 
             color="#ffffff"
             emissive="#ffffff"
-            emissiveIntensity={0.7}
+            emissiveIntensity={0.9}
           />
         </mesh>
         
-        {/* Text on screen */}
+        {/* MacBook camera notch */}
+        <mesh position={[0, 0.9, 0.04]}>
+          <boxGeometry args={[0.15, 0.03, 0.01]} />
+          <meshStandardMaterial color="#000000" />
+        </mesh>
+        
+        {/* Text on screen - AI-themed */}
         <Text
-          position={[0, 0, 0.08]}
-          fontSize={0.2}
+          position={[0, 0.2, 0.05]}
+          fontSize={0.15}
           color="#000000"
           font="/fonts/Inter_Bold.json"
           anchorX="center"
@@ -143,23 +164,33 @@ const GamingLaptop = ({ isMobile, scrollY }: ComputerModelProps) => {
         >
           AI IS THE FUTURE
         </Text>
+        
+        {/* Code snippet on screen */}
+        <Text
+          position={[0, -0.2, 0.05]}
+          fontSize={0.08}
+          color="#000000"
+          font="/fonts/Inter_Bold.json"
+          anchorX="center"
+          anchorY="middle"
+        >
+          {`function trainAI() {\n  const model = new LLM();\n  model.optimize(); \n  return model;\n}`}
+        </Text>
       </group>
       
-      {/* Exhaust vents on sides */}
-      {[1.4, -1.4].map((x, i) => (
-        <mesh key={i} position={[x, 0.1, 0]} rotation={[0, 0, Math.PI / 2]}>
-          <cylinderGeometry args={[0.05, 0.05, 0.2, 8]} />
-          <meshStandardMaterial color="#111111" />
-        </mesh>
-      ))}
-      
-      {/* Logo on lid back (visible when lid closed) */}
-      <mesh position={[0, 0.1, -0.95]} rotation={[Math.PI / 4, 0, 0]}>
-        <circleGeometry args={[0.2, 32]} />
+      {/* Apple logo on lid back (glowing) */}
+      <mesh 
+        ref={logoRef}
+        position={[0, 0.08, -0.95]} 
+        rotation={[Math.PI / 4, 0, 0]}
+      >
+        <planeGeometry args={[0.4, 0.5]} />
         <meshStandardMaterial 
-          color={hovered ? "#915eff" : "#4a5af5"} 
-          emissive={hovered ? "#915eff" : "#4a5af5"}
-          emissiveIntensity={0.8} 
+          color="#915eff"
+          emissive="#915eff"
+          emissiveIntensity={0.8}
+          transparent={true}
+          opacity={0.9}
         />
       </mesh>
     </group>
@@ -231,7 +262,7 @@ const ComputersCanvas = () => {
           intensity={1.5}
         />
         <pointLight position={[0, 0, 3]} intensity={1} color="#915eff" />
-        <GamingLaptop isMobile={isMobile} scrollY={scrollY} />
+        <MacbookPro isMobile={isMobile} scrollY={scrollY} />
       </Suspense>
       <Preload all />
     </Canvas>

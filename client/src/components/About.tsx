@@ -46,7 +46,7 @@ const About = () => {
           whileInView="show"
           viewport={{ once: true, amount: 0.25 }}
           variants={fadeIn("", "", 0.1, 1)}
-          className="mt-6 bg-tertiary p-6 rounded-lg shadow-xl"
+          className="mt-6 bg-black/60 backdrop-blur-sm p-8 rounded-xl shadow-2xl border border-[#915eff]/20"
         >
           <p className="text-white text-[17px] max-w-3xl leading-[30px]">
             I'm an AI/ML Engineer specializing in LLMs, Agentic AI, and AI-powered automation to build scalable, deployable solutions that enhance efficiency and performance. With expertise in CrewAI, LangChain, RAG, and fine-tuning LLMs (LoRA, PEFT, QLoRA), I develop intelligent chatbots, optimize AI workflows, and streamline decision-making. 

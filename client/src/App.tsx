@@ -42,6 +42,21 @@ const App = () => {
   return (
     <BrowserRouter>
       <div className="relative z-0 bg-primary">
+        {/* Futuristic background elements */}
+        <div className="fixed inset-0 z-[-2] bg-[#030014]">
+          {/* Grid lines */}
+          <div className="fixed inset-0 z-[-1] opacity-20 bg-[url('/textures/grid.svg')] bg-repeat"></div>
+          
+          {/* Glowing circle in top-right */}
+          <div className="fixed top-[-30vh] right-[-20vw] w-[80vw] h-[80vh] rounded-full bg-[#4315e1] opacity-30 blur-[120px] z-[-1]"></div>
+          
+          {/* Glowing circle in bottom-left */}
+          <div className="fixed bottom-[-10vh] left-[-10vw] w-[50vw] h-[50vh] rounded-full bg-[#4a00e0] opacity-20 blur-[100px] z-[-1]"></div>
+          
+          {/* Digital circuit pattern */}
+          <div className="fixed inset-0 z-[-1] opacity-5 bg-[url('/textures/circuit.svg')] bg-repeat bg-center"></div>
+        </div>
+        
         <div className="bg-hero-pattern bg-cover bg-no-repeat bg-center">
           <Navbar />
           <section className="relative w-full h-screen mx-auto">
@@ -49,7 +64,7 @@ const App = () => {
             <div className="absolute inset-0 z-[-1]">
               <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
                 <Suspense fallback={null}>
-                  <StarsBackground count={1500} speed={0.3} />
+                  <StarsBackground count={2000} speed={0.3} />
                   <ambientLight intensity={0.2} />
                 </Suspense>
               </Canvas>
