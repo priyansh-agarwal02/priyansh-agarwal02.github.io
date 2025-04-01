@@ -21,11 +21,10 @@ const MacbookPro = ({ isMobile, scrollY }: ComputerModelProps) => {
     
     if (laptopRef.current) {
       // Base animation - subtle floating and rotation
-      laptopRef.current.position.y = Math.sin(time * 0.5) * 0.05;
+      laptopRef.current.position.y = Math.sin(time * 0.5) * 0.1;
       
       // Add hover effect
       if (hovered) {
-        // When hovered, tilt slightly to show keyboard better
         laptopRef.current.rotation.x = THREE.MathUtils.lerp(
           laptopRef.current.rotation.x,
           -0.2, 
@@ -33,11 +32,10 @@ const MacbookPro = ({ isMobile, scrollY }: ComputerModelProps) => {
         );
         laptopRef.current.rotation.y = THREE.MathUtils.lerp(
           laptopRef.current.rotation.y,
-          -0.3 - scrollY * 0.003,
+          -0.3 - scrollY * 0.001,
           0.05
         );
       } else {
-        // Normal position
         laptopRef.current.rotation.x = THREE.MathUtils.lerp(
           laptopRef.current.rotation.x,
           -0.1, 
@@ -45,7 +43,7 @@ const MacbookPro = ({ isMobile, scrollY }: ComputerModelProps) => {
         );
         laptopRef.current.rotation.y = THREE.MathUtils.lerp(
           laptopRef.current.rotation.y,
-          -0.2 - scrollY * 0.003 + Math.sin(time * 0.3) * 0.05,
+          -0.2 - scrollY * 0.001 + Math.sin(time * 0.3) * 0.05,
           0.05
         );
       }
@@ -70,8 +68,9 @@ const MacbookPro = ({ isMobile, scrollY }: ComputerModelProps) => {
   return (
     <group 
       ref={laptopRef} 
-      position={[0, isMobile ? -1.0 : -0.8, 0]} 
-      scale={isMobile ? 0.6 : 0.85}
+      position={[0, isMobile ? -2 : -1, 0]} 
+      scale={isMobile ? 0.5 : 0.7}
+      rotation={[0.1, -0.2, 0]}
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
     >
@@ -219,26 +218,20 @@ const ComputersCanvas = () => {
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
-    // Add a listener for changes to the screen size
     const mediaQuery = window.matchMedia("(max-width: 768px)");
-    // Set the initial value of the 'isMobile' state variable
     setIsMobile(mediaQuery.matches);
     
-    // Define a callback function to handle changes to the media query
     const handleMediaQueryChange = (event: MediaQueryListEvent) => {
       setIsMobile(event.matches);
     };
     
-    // Add the callback function as a listener for changes to the media query
     mediaQuery.addEventListener("change", handleMediaQueryChange);
     
-    // Handle scroll for rotation
     const handleScroll = () => {
       setScrollY(window.scrollY);
     };
     window.addEventListener("scroll", handleScroll);
     
-    // Remove the listener when the component is unmounted
     return () => {
       mediaQuery.removeEventListener("change", handleMediaQueryChange);
       window.removeEventListener("scroll", handleScroll);
@@ -252,36 +245,51 @@ const ComputersCanvas = () => {
   
   return (
     <Canvas
-      frameloop="always"
       shadows
       dpr={[1, 2]}
-      camera={{ position: [0, 0, 5], fov: 30 }}
+      camera={{ 
+        position: [4, 0, -8],
+        fov: 35,
+        near: 0.1,
+        far: 1000
+      }}
       gl={{ preserveDrawingBuffer: true }}
-      style={{ 
-        position: "absolute", 
-        width: "100%", 
-        height: "100%", 
-        zIndex: 10,
-        pointerEvents: "auto"
+      style={{
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        width: '50%',
+        height: '100%',
+        pointerEvents: 'none'
       }}
     >
       <Suspense fallback={null}>
-        <OrbitControls 
-          enableZoom={false} 
-          maxPolarAngle={Math.PI / 2}
-          minPolarAngle={Math.PI / 2}
-        />
         <ambientLight intensity={0.8} />
         <directionalLight
-          position={[5, 5, 5]}
+          position={[5, 5, -5]}
           castShadow
+          intensity={1}
           shadow-mapSize={1024}
-          intensity={1.5}
         />
-        <pointLight position={[0, 0, 3]} intensity={1} color="#915eff" />
+        <spotLight
+          position={[0, 5, 0]}
+          intensity={0.5}
+          angle={0.5}
+          penumbra={1}
+          castShadow
+        />
+        <pointLight position={[0, 0, -3]} intensity={0.5} color="#915eff" />
+        
         <MacbookPro isMobile={isMobile} scrollY={scrollY} />
+        
+        <OrbitControls
+          enableZoom={false}
+          maxPolarAngle={Math.PI / 2}
+          minPolarAngle={Math.PI / 2}
+          enableRotate={false}
+        />
+        <Preload all />
       </Suspense>
-      <Preload all />
     </Canvas>
   );
 };

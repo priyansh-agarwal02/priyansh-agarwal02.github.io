@@ -124,24 +124,24 @@ const App = () => {
           </section>
         </div>
         
-        {/* Add negative margin to reduce space between sections */}
-        <div className="mt-[-20px]">
+        {/* Reduce spacing between sections */}
+        <div className="mt-[-100px] relative z-0">
           <About />
         </div>
         
-        <div className="mt-[-40px]">
+        <div className="mt-[-100px] relative z-0">
           <Experience />
         </div>
         
-        <div className="mt-[-40px]">
+        <div className="mt-[-100px] relative z-0">
           <Skills />
         </div>
         
-        <div className="mt-[-40px]">
+        <div className="mt-[-100px] relative z-0">
           <Projects />
         </div>
         
-        <div className="relative z-0 mt-[-20px]">
+        <div className="mt-[-100px] relative z-0">
           <Contact />
         </div>
       </div>

@@ -13,3 +13,8 @@ export const styles = {
   sectionSubText:
     "sm:text-[18px] text-[14px] text-secondary uppercase tracking-wider",
 };
+
+// Add green gradient style to index.css
+// .green-gradient {
+//   background: linear-gradient(-90deg, #00ff88 0%, rgba(0, 255, 136, 0) 100%);
+// }

@@ -26,6 +26,20 @@
   display: block;
 }
 
+.black-gradient {
+  background: #000000;
+  background: -webkit-linear-gradient(
+    to right,
+    #434343,
+    #000000
+  );
+  background: linear-gradient(
+    to right,
+    #434343,
+    #000000
+  );
+}
+
 .violet-gradient {
   background: #804dee;
   background: linear-gradient(-90deg, #804dee 0%, rgba(60, 51, 80, 0) 100%);
@@ -197,21 +211,6 @@
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
-}
-
-/* Black-gradient overlay effect */
-.black-gradient {
-  background: #000000;
-  background: -webkit-linear-gradient(
-    to right,
-    #434343,
-    #000000
-  );
-  background: linear-gradient(
-    to right,
-    #434343,
-    #000000
-  );
 }
 
 /* 3D object wrapper */

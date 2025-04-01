@@ -69,19 +69,20 @@ const Experience = () => {
   }, []);
 
   return (
-    <section id="experience" className="relative py-20" ref={experienceRef}>
-      <div className={`${styles.padding} max-w-7xl mx-auto relative z-10`}>
-        <motion.div 
+    <section id="experience" className="relative py-10">
+      <div className={`${styles.padding} max-w-7xl mx-auto`}>
+        <motion.div
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, amount: 0.25 }}
+          viewport={{ once: false, amount: 0.25 }}
           variants={textVariant(0.1)}
+          className="mb-8"
         >
-          <p className={styles.sectionSubText}>What I have done so far</p>
-          <h2 className={`${styles.sectionHeadText} mt-6`}>Work Experience.</h2>
+          <p className={`${styles.sectionSubText} uppercase tracking-wider`}>What I have done so far</p>
+          <h2 className={`${styles.sectionHeadText} mt-6 text-[70px]`}>Work Experience.</h2>
         </motion.div>
 
-        <div className="mt-20 timeline-container">
+        <div className="mt-4 flex flex-col">
           <VerticalTimeline>
             {experiences.map((experience, index) => (
               <ExperienceCard key={index} experience={experience} />

@@ -4,7 +4,11 @@ import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import { GLTF } from "three-stdlib";
 
-const AIRobot = () => {
+interface AIRobotProps {
+  scale?: number;
+}
+
+const AIRobot = ({ scale = 2.5 }: AIRobotProps) => {
   const robotRef = useRef<THREE.Group>(null);
   const [modelLoaded, setModelLoaded] = useState(false);
   
@@ -53,7 +57,7 @@ const AIRobot = () => {
   });
   
   return (
-    <group ref={robotRef} position={[0, 0, 0]} scale={[2.5, 2.5, 2.5]}>
+    <group ref={robotRef} position={[0, 0, 0]} scale={scale}>
       {modelLoaded ? (
         <primitive object={robotModel.clone()} />
       ) : (

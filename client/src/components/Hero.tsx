@@ -1,19 +1,20 @@
 import { motion } from "framer-motion";
-import { useEffect, useRef, Suspense } from "react";
+import { useEffect, useRef, Suspense, useState } from "react";
 import { styles } from "../styles";
 import { gsap } from "gsap";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import SimpleLaptop from "./canvas/SimpleLaptop";
+import ParticleBackground from './canvas/ParticleBackground';
 
 const Hero = () => {
+  const [useNewBackground, setUseNewBackground] = useState(true);
   const heroRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const subHeadingRef = useRef<HTMLParagraphElement>(null);
   const computerContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // GSAP animation for hero section
     if (heroRef.current && headingRef.current && subHeadingRef.current) {
       const tl = gsap.timeline();
       
@@ -31,15 +32,22 @@ const Hero = () => {
       }, "-=0.6");
     }
     
-    // Log when hero section mounts
     console.log("Hero section mounted");
   }, []);
 
   return (
     <section className="relative w-full h-screen mx-auto overflow-hidden" ref={heroRef}>
-      <div
-        className={`${styles.paddingX} absolute inset-0 top-[120px] max-w-7xl mx-auto flex flex-row items-start gap-5 z-10`}
+      {/* Toggle button for background */}
+      <button
+        onClick={() => setUseNewBackground(!useNewBackground)}
+        className="absolute top-24 right-4 z-50 bg-white/10 px-4 py-2 rounded-full text-white text-sm backdrop-blur-sm"
       >
+        Toggle Background
+      </button>
+
+      {useNewBackground && <ParticleBackground />}
+      
+      <div className={`${styles.paddingX} absolute inset-0 top-[120px] max-w-7xl mx-auto flex flex-row items-start gap-5 z-10`}>
         <div className="flex flex-col justify-center items-center mt-5">
           <div className="w-5 h-5 rounded-full bg-[#915eff]" />
           <div className="w-1 sm:h-80 h-40 violet-gradient" />
@@ -47,16 +55,16 @@ const Hero = () => {
 
         <div>
           <h1 
-            ref={headingRef} 
+            ref={headingRef}
             className={`${styles.heroHeadText} text-white`}
           >
-            Hi, I'm <span className="text-[#915eff]">Priyansh</span>
+            Hi, I'm <span className={useNewBackground ? "bg-clip-text text-transparent bg-gradient-to-r from-purple-500 via-white to-purple-500" : "text-[#915eff]"}>Priyansh</span>
           </h1>
           <p 
             ref={subHeadingRef}
             className={`${styles.heroSubText} mt-2 text-white-100`}
           >
-            AI/ML Engineer specializing in LLMs, <br className="sm:block hidden" />
+            AI/ML Engineer specializing in LLMs,<br className="sm:block hidden" />
             Agentic AI, and AI-powered automation
           </p>
           
@@ -75,25 +83,7 @@ const Hero = () => {
         </div>
       </div>
 
-      <div className="absolute xs:bottom-10 bottom-32 w-full flex justify-center items-center z-10">
-        <a href="#about">
-          <div className="w-[35px] h-[64px] rounded-3xl border-4 border-secondary flex justify-center items-start p-2">
-            <motion.div
-              animate={{
-                y: [0, 24, 0],
-              }}
-              transition={{
-                duration: 1.5,
-                repeat: Infinity,
-                repeatType: "loop",
-              }}
-              className="w-3 h-3 rounded-full bg-secondary mb-1"
-            />
-          </div>
-        </a>
-      </div>
-
-      {/* Computer model container with direct Canvas implementation */}
+      {/* Computer model container */}
       <div 
         ref={computerContainerRef}
         className="absolute right-0 bottom-0 w-full md:w-1/2 h-full z-[15]"
@@ -113,6 +103,25 @@ const Hero = () => {
             <OrbitControls enableZoom={false} />
           </Suspense>
         </Canvas>
+      </div>
+
+      {/* Scroll indicator */}
+      <div className="absolute xs:bottom-10 bottom-32 w-full flex justify-center items-center z-10">
+        <a href="#about">
+          <div className="w-[35px] h-[64px] rounded-3xl border-4 border-white flex justify-center items-start p-2">
+            <motion.div
+              animate={{
+                y: [0, 24, 0],
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                repeatType: "loop",
+              }}
+              className="w-3 h-3 rounded-full bg-white mb-1"
+            />
+          </div>
+        </a>
       </div>
     </section>
   );

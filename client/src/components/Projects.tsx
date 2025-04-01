@@ -31,13 +31,15 @@ const ProjectCard = ({
   useEffect(() => {
     if (cardRef.current) {
       gsap.from(cardRef.current, {
-        y: 50,
+        y: 30,
         opacity: 0,
         duration: 0.8,
-        delay: index * 0.2,
+        delay: index * 0.1,
         scrollTrigger: {
           trigger: cardRef.current,
           start: "top 90%",
+          end: "top 60%",
+          toggleActions: "play none none reverse",
         },
       });
     }
@@ -91,40 +93,42 @@ const Projects = () => {
   useEffect(() => {
     if (projectsRef.current) {
       gsap.from(".projects-heading", {
-        y: 50,
+        y: 30,
         opacity: 0,
-        duration: 1,
+        duration: 0.8,
         scrollTrigger: {
           trigger: projectsRef.current,
           start: "top 80%",
-          end: "top 50%",
-          scrub: 1,
+          end: "top 30%",
+          toggleActions: "play none none reverse",
+          scrub: false
         },
       });
     }
   }, []);
 
   return (
-    <section id="work" className="relative py-20" ref={projectsRef}>
+    <section id="work" className="relative py-10" ref={projectsRef}>
       <div className={`${styles.padding} max-w-7xl mx-auto`}>
         <div className="projects-heading">
           <motion.div
             initial="hidden"
             whileInView="show"
-            viewport={{ once: true, amount: 0.25 }}
+            viewport={{ once: false, amount: 0.25 }}
             variants={textVariant(0.1)}
+            className="mb-8"
           >
-            <p className={styles.sectionSubText}>My work</p>
-            <h2 className={`${styles.sectionHeadText} mt-6`}>Projects.</h2>
+            <p className={`${styles.sectionSubText} uppercase tracking-wider`}>My work</p>
+            <h2 className={`${styles.sectionHeadText} mt-6 text-[70px]`}>Projects.</h2>
           </motion.div>
 
           <div className="w-full flex">
             <motion.p
               initial="hidden"
               whileInView="show"
-              viewport={{ once: true, amount: 0.25 }}
+              viewport={{ once: false, amount: 0.25 }}
               variants={fadeIn("", "", 0.1, 1)}
-              className="mt-6 mb-6 text-secondary text-[17px] max-w-3xl leading-[30px]"
+              className="mt-4 text-secondary text-[17px] max-w-3xl leading-[30px]"
             >
               Following projects showcase my skills and experience through real-world
               examples of my work. Each project is briefly described with links to
@@ -134,10 +138,17 @@ const Projects = () => {
           </div>
         </div>
 
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
-          {projects.map((project, index) => (
-            <ProjectCard key={`project-${index}`} index={index} {...project} />
-          ))}
+        <div className="mt-20 flex flex-wrap gap-7">
+          <div className="flex flex-row flex-wrap justify-center gap-7 w-full">
+            {projects.map((project, index) => (
+              <div
+                key={`project-${index}`}
+                className="w-[360px]"
+              >
+                <ProjectCard {...project} />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

@@ -19,7 +19,7 @@ const Contact = () => {
   return (
     <section 
       id="contact" 
-      className="relative w-full h-auto min-h-screen pb-8 items-center flex xl:flex-row flex-col overflow-hidden"
+      className="relative w-full h-screen mx-auto"
       ref={contactRef}
     >
       {/* Full-screen stars background for the entire section */}
@@ -32,15 +32,15 @@ const Contact = () => {
         </Canvas>
       </div>
       
-      <div className={`${styles.paddingX} max-w-7xl mx-auto flex md:flex-row flex-col-reverse items-center gap-8 relative z-10`}>
+      <div className={`${styles.padding} max-w-7xl mx-auto relative z-10 flex xl:flex-row flex-col gap-10 h-full items-center`}>
         {/* Contact info section */}
         <motion.div
           variants={slideIn("left", "tween", 0.2, 1)}
-          className="flex-1 bg-tertiary p-6 rounded-2xl shadow-xl"
+          className="flex-[0.75] bg-tertiary p-8 rounded-2xl shadow-xl w-full"
         >
           <h3 className={`${styles.sectionHeadText} mb-8`}>Contact.</h3>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {/* Button-style contact links */}
             <a
               href="tel:+917619826222"
@@ -192,7 +192,7 @@ const Contact = () => {
               </svg>
             </a>
             
-            {/* Twitter/X */}
+            {/* Twitter/X
             <a 
               href="#" 
               target="_blank" 
@@ -202,7 +202,7 @@ const Contact = () => {
               <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
               </svg>
-            </a>
+            </a> */}
           </div>
           
           {/* Footer */}
@@ -211,7 +211,7 @@ const Contact = () => {
               Made with ♥ by Priyansh
             </p>
             <p className="text-white text-xs">
-              © 2024 All Rights Reserved.
+              © 2025 All Rights Reserved.
             </p>
           </div>
         </motion.div>
@@ -219,29 +219,34 @@ const Contact = () => {
         {/* AI Robot - Separated from stars background */}
         <motion.div
           variants={slideIn("right", "tween", 0.2, 1)}
-          className="xl:flex-1 xl:h-auto md:h-[550px] h-[300px] relative z-10"
+          className="xl:flex-1 h-[550px] w-full relative z-10"
         >
           <Canvas 
-            camera={{ position: [0, 0, 5], fov: 60 }}
+            camera={{ position: [0, 0, 4], fov: 45 }}
             shadows
           >
-            <ambientLight intensity={0.5} />
+            <ambientLight intensity={0.8} />
             <directionalLight 
               position={[5, 5, 5]} 
-              intensity={1.2} 
+              intensity={1.5} 
               castShadow 
-              shadow-mapSize={1024} 
+              shadow-mapSize={2048} 
             />
-            <pointLight position={[0, 0, 3]} intensity={1.5} color="#0077ff" />
+            <pointLight position={[0, 0, 3]} intensity={2} color="#915eff" />
             
             {/* AI Robot */}
-            <AIRobot />
+            <group>
+              <AIRobot scale={2.5} />
+            </group>
             
             {/* Controls */}
             <OrbitControls 
               enableZoom={false}
               maxPolarAngle={Math.PI / 2}
               minPolarAngle={Math.PI / 2}
+              enableRotate={true}
+              autoRotate={true}
+              autoRotateSpeed={4}
             />
             <Preload all />
           </Canvas>
