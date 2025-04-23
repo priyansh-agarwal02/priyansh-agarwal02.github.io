@@ -9,6 +9,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 export default defineConfig({
+  base: "/3D-PORTFOLIO/",
   plugins: [
     react(),
     runtimeErrorOverlay(),
