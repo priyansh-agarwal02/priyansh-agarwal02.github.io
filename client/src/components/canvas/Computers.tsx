@@ -14,51 +14,63 @@ const MacbookPro = ({ isMobile, scrollY }: ComputerModelProps) => {
   const screenRef = useRef<THREE.Mesh>(null);
   const logoRef = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
+  const [errorState, setErrorState] = useState<string | null>(null);
   
-  // Animation effect
+  // Animation effect with error handling
   useFrame(({ clock }) => {
-    const time = clock.getElapsedTime();
-    
-    if (laptopRef.current) {
-      // Base animation - subtle floating and rotation
-      laptopRef.current.position.y = Math.sin(time * 0.5) * 0.1;
+    try {
+      const time = clock.getElapsedTime();
       
-      // Add hover effect
-      if (hovered) {
-        laptopRef.current.rotation.x = THREE.MathUtils.lerp(
-          laptopRef.current.rotation.x,
-          -0.2, 
-          0.05
-        );
-        laptopRef.current.rotation.y = THREE.MathUtils.lerp(
-          laptopRef.current.rotation.y,
-          -0.3 - scrollY * 0.001,
-          0.05
-        );
-      } else {
-        laptopRef.current.rotation.x = THREE.MathUtils.lerp(
-          laptopRef.current.rotation.x,
-          -0.1, 
-          0.05
-        );
-        laptopRef.current.rotation.y = THREE.MathUtils.lerp(
-          laptopRef.current.rotation.y,
-          -0.2 - scrollY * 0.001 + Math.sin(time * 0.3) * 0.05,
-          0.05
-        );
+      if (laptopRef.current) {
+        // Base animation - subtle floating and rotation
+        laptopRef.current.position.y = Math.sin(time * 0.5) * 0.1;
+        
+        // Add hover effect
+        if (hovered) {
+          laptopRef.current.rotation.x = THREE.MathUtils.lerp(
+            laptopRef.current.rotation.x,
+            -0.2, 
+            0.05
+          );
+          laptopRef.current.rotation.y = THREE.MathUtils.lerp(
+            laptopRef.current.rotation.y,
+            -0.3 - scrollY * 0.001,
+            0.05
+          );
+        } else {
+          laptopRef.current.rotation.x = THREE.MathUtils.lerp(
+            laptopRef.current.rotation.x,
+            -0.1, 
+            0.05
+          );
+          laptopRef.current.rotation.y = THREE.MathUtils.lerp(
+            laptopRef.current.rotation.y,
+            -0.2 - scrollY * 0.001 + Math.sin(time * 0.3) * 0.05,
+            0.05
+          );
+        }
       }
-    }
-    
-    if (screenRef.current && screenRef.current.material instanceof THREE.MeshStandardMaterial) {
-      // Make the screen "pulse" with light
-      screenRef.current.material.emissiveIntensity = 0.9 + Math.sin(time * 1.5) * 0.1;
-    }
-    
-    if (logoRef.current && logoRef.current.material instanceof THREE.MeshStandardMaterial) {
-      // Animate logo glow
-      logoRef.current.material.emissiveIntensity = 0.7 + Math.sin(time * 0.8) * 0.3;
+      
+      if (screenRef.current && screenRef.current.material instanceof THREE.MeshStandardMaterial) {
+        // Make the screen "pulse" with light
+        screenRef.current.material.emissiveIntensity = 0.9 + Math.sin(time * 1.5) * 0.1;
+      }
+      
+      if (logoRef.current && logoRef.current.material instanceof THREE.MeshStandardMaterial) {
+        // Animate logo glow
+        logoRef.current.material.emissiveIntensity = 0.7 + Math.sin(time * 0.8) * 0.3;
+      }
+    } catch (error) {
+      console.error("Animation error:", error);
+      setErrorState("Animation error occurred");
     }
   });
+
+  // Error boundary for the component
+  if (errorState) {
+    console.error("Component error:", errorState);
+    return null; // Return empty to prevent crash
+  }
 
   // Log laptop visibility
   useEffect(() => {
@@ -216,28 +228,47 @@ const MacbookPro = ({ isMobile, scrollY }: ComputerModelProps) => {
 const ComputersCanvas = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [scrollY, setScrollY] = useState(0);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(max-width: 768px)");
-    setIsMobile(mediaQuery.matches);
-    
-    const handleMediaQueryChange = (event: MediaQueryListEvent) => {
-      setIsMobile(event.matches);
-    };
-    
-    mediaQuery.addEventListener("change", handleMediaQueryChange);
-    
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
-    window.addEventListener("scroll", handleScroll);
-    
-    return () => {
-      mediaQuery.removeEventListener("change", handleMediaQueryChange);
-      window.removeEventListener("scroll", handleScroll);
-    };
+    try {
+      // Add a listener for changes to the screen size
+      const mediaQuery = window.matchMedia("(max-width: 500px)");
+      
+      // Set the initial value of the `isMobile` state variable
+      setIsMobile(mediaQuery.matches);
+
+      // Define a callback function to handle changes to the media query
+      const handleMediaQueryChange = (event: MediaQueryListEvent) => {
+        setIsMobile(event.matches);
+      };
+
+      // Add the callback function as a listener for changes to the media query
+      mediaQuery.addEventListener("change", handleMediaQueryChange);
+
+      // Handle scroll events
+      const handleScroll = () => {
+        setScrollY(window.scrollY);
+      };
+
+      window.addEventListener("scroll", handleScroll);
+
+      // Remove the listener when the component is unmounted
+      return () => {
+        mediaQuery.removeEventListener("change", handleMediaQueryChange);
+        window.removeEventListener("scroll", handleScroll);
+      };
+    } catch (error) {
+      console.error("Setup error:", error);
+      setError("Failed to initialize component");
+    }
   }, []);
-  
+
+  if (error) {
+    console.error("Canvas error:", error);
+    return null; // Return empty to prevent crash
+  }
+
   // Log visibility of the component
   useEffect(() => {
     console.log("3D Laptop component rendered");
@@ -245,51 +276,22 @@ const ComputersCanvas = () => {
   
   return (
     <Canvas
+      frameloop="demand"
       shadows
       dpr={[1, 2]}
-      camera={{ 
-        position: [4, 0, -8],
-        fov: 35,
-        near: 0.1,
-        far: 1000
-      }}
+      camera={{ position: [20, 3, 5], fov: 25 }}
       gl={{ preserveDrawingBuffer: true }}
-      style={{
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        width: '50%',
-        height: '100%',
-        pointerEvents: 'none'
-      }}
     >
       <Suspense fallback={null}>
-        <ambientLight intensity={0.8} />
-        <directionalLight
-          position={[5, 5, -5]}
-          castShadow
-          intensity={1}
-          shadow-mapSize={1024}
-        />
-        <spotLight
-          position={[0, 5, 0]}
-          intensity={0.5}
-          angle={0.5}
-          penumbra={1}
-          castShadow
-        />
-        <pointLight position={[0, 0, -3]} intensity={0.5} color="#915eff" />
-        
-        <MacbookPro isMobile={isMobile} scrollY={scrollY} />
-        
         <OrbitControls
           enableZoom={false}
           maxPolarAngle={Math.PI / 2}
           minPolarAngle={Math.PI / 2}
-          enableRotate={false}
         />
-        <Preload all />
+        <MacbookPro isMobile={isMobile} scrollY={scrollY} />
       </Suspense>
+
+      <Preload all />
     </Canvas>
   );
 };

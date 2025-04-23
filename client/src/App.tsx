@@ -14,14 +14,27 @@ import Computers from "./components/canvas/Computers";
 
 const App = () => {
   const [loading, setLoading] = useState(true);
+  const [assetsLoaded, setAssetsLoaded] = useState(false);
 
   useEffect(() => {
-    // Simulate loading time for assets and animations
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 2000);
+    // Load assets first
+    Promise.all([
+      // Pre-load any critical assets here
+      new Promise(resolve => setTimeout(resolve, 2000)) // Minimum loading time
+    ])
+      .then(() => {
+        setAssetsLoaded(true);
+        setTimeout(() => setLoading(false), 500); // Smooth transition
+      })
+      .catch(error => {
+        console.error("Error loading assets:", error);
+        setLoading(false); // Still show the site even if some assets fail
+      });
 
-    return () => clearTimeout(timer);
+    // Cleanup
+    return () => {
+      // Any cleanup needed
+    };
   }, []);
 
   if (loading) {
@@ -57,12 +70,16 @@ const App = () => {
           <div className="fixed inset-0 z-[-1] opacity-5 bg-[url('/textures/circuit.svg')] bg-repeat bg-center"></div>
         </div>
         
-        <div className="bg-hero-pattern bg-cover bg-no-repeat bg-center">
+        <div className="bg-hero-pattern bg-cover bg-no-repeat bg-center min-h-screen">
           <Navbar />
-          <section className="relative w-full h-screen mx-auto">
+          <section className="relative w-full h-screen mx-auto overflow-hidden">
             {/* 3D background stars */}
             <div className="absolute inset-0 z-[-1]">
-              <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
+              <Canvas
+                camera={{ position: [0, 0, 5], fov: 45 }}
+                style={{ position: 'absolute' }}
+                gl={{ preserveDrawingBuffer: true }}
+              >
                 <Suspense fallback={null}>
                   <StarsBackground count={2000} speed={0.3} />
                   <ambientLight intensity={0.2} />
@@ -101,7 +118,9 @@ const App = () => {
 
             {/* 3D Computer */}
             <div className="absolute right-0 bottom-0 h-screen w-full md:w-1/2 lg:w-1/3 z-[5]">
-              <Computers />
+              <Suspense fallback={null}>
+                <Computers />
+              </Suspense>
             </div>
 
             <div className="absolute xs:bottom-10 bottom-32 w-full flex justify-center items-center z-10">
@@ -124,25 +143,27 @@ const App = () => {
           </section>
         </div>
         
-        {/* Reduce spacing between sections */}
-        <div className="mt-[-100px] relative z-0">
-          <About />
-        </div>
-        
-        <div className="mt-[-100px] relative z-0">
-          <Experience />
-        </div>
-        
-        <div className="mt-[-100px] relative z-0">
-          <Skills />
-        </div>
-        
-        <div className="mt-[-100px] relative z-0">
-          <Projects />
-        </div>
-        
-        <div className="mt-[-100px] relative z-0">
-          <Contact />
+        {/* Main content sections with proper z-index and overflow handling */}
+        <div className="relative bg-primary z-0">
+          <div className="mt-[-100px]">
+            <About />
+          </div>
+          
+          <div className="mt-[-100px]">
+            <Experience />
+          </div>
+          
+          <div className="mt-[-100px]">
+            <Skills />
+          </div>
+          
+          <div className="mt-[-100px]">
+            <Projects />
+          </div>
+          
+          <div className="mt-[-100px]">
+            <Contact />
+          </div>
         </div>
       </div>
     </HashRouter>
