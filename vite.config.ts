@@ -1,30 +1,35 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import path from "path";
+import path, { dirname } from "path";
+import { fileURLToPath } from "url";
 import glsl from "vite-plugin-glsl";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 export default defineConfig({
-  base: "/",  // Root path for GitHub Pages user site
+  base: "/",
   plugins: [
     react(),
-    glsl()
+    glsl(), // Add GLSL shader support
   ],
-  root: "./client",  // Set the root to the client directory
-  publicDir: "./client/public",  // Set the public directory
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "client", "src"),
+      "@shared": path.resolve(__dirname, "shared"),
+    },
+  },
+  root: path.resolve(__dirname, "client"),
   build: {
-    outDir: "../dist",  // Output to the root dist directory
+    outDir: path.resolve(__dirname, "dist"),
     emptyOutDir: true,
     rollupOptions: {
-      input: {
-        main: path.resolve(__dirname, "client/index.html")
+      output: {
+        manualChunks: undefined
       }
     }
   },
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "client/src")
-    }
-  },
+  publicDir: path.resolve(__dirname, "client/public"),
   // Add support for large models and audio files
-  assetsInclude: ["**/*.gltf", "**/*.glb", "**/*.mp3", "**/*.ogg", "**/*.wav"]
+  assetsInclude: ["**/*.gltf", "**/*.glb", "**/*.mp3", "**/*.ogg", "**/*.wav"],
 });
