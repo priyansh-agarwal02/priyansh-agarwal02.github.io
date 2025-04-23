@@ -1,37 +1,30 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import path, { dirname } from "path";
-import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
-import { fileURLToPath } from "url";
+import path from "path";
 import glsl from "vite-plugin-glsl";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
 export default defineConfig({
-  base: "/3D-PORTFOLIO/",
+  base: "/",  // Root path for GitHub Pages user site
   plugins: [
     react(),
-    runtimeErrorOverlay(),
-    glsl(), // Add GLSL shader support
+    glsl()
   ],
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "client", "src"),
-      "@shared": path.resolve(__dirname, "shared"),
-    },
-  },
-  root: path.resolve(__dirname, "client"),
+  root: "./client",  // Set the root to the client directory
+  publicDir: "./client/public",  // Set the public directory
   build: {
-    outDir: path.resolve(__dirname, "dist"),
+    outDir: "../dist",  // Output to the root dist directory
     emptyOutDir: true,
     rollupOptions: {
-      output: {
-        manualChunks: undefined
+      input: {
+        main: path.resolve(__dirname, "client/index.html")
       }
     }
   },
-  publicDir: path.resolve(__dirname, "client/public"),
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "client/src")
+    }
+  },
   // Add support for large models and audio files
-  assetsInclude: ["**/*.gltf", "**/*.glb", "**/*.mp3", "**/*.ogg", "**/*.wav"],
+  assetsInclude: ["**/*.gltf", "**/*.glb", "**/*.mp3", "**/*.ogg", "**/*.wav"]
 });
