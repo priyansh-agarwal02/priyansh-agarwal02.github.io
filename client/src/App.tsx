@@ -1,5 +1,5 @@
 import { useEffect, useState, Suspense } from "react";
-import { BrowserRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Canvas } from "@react-three/fiber";
 
@@ -40,7 +40,7 @@ const App = () => {
   }
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <div className="relative z-0 bg-primary">
         {/* Futuristic background elements */}
         <div className="fixed inset-0 z-[-2] bg-[#030014]">
@@ -145,7 +145,7 @@ const App = () => {
           <Contact />
         </div>
       </div>
-    </BrowserRouter>
+    </HashRouter>
   );
 };
 
